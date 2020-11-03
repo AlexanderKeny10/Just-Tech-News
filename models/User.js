@@ -1,12 +1,6 @@
-const bcrypt = require('bcrypt');
 const { Model, DataTypes } = require('sequelize');
+const bcrypt = require('bcrypt');
 const sequelize = require('../config/connection');
-
-// bcrypt.genSalt(saltRounds, function(err, salt) {
-//   bcrypt.hash(myPlaintextPassword, salt, function(err, hash) {
-//       // Store hash in your password DB.
-//   });
-// });
 
 // create our User model
 class User extends Model {
@@ -16,7 +10,7 @@ class User extends Model {
   }
 }
 
-// define table columns and configuration
+// create fields/columns for User model
 User.init(
   {
     id: {
@@ -52,7 +46,7 @@ User.init(
         newUserData.password = await bcrypt.hash(newUserData.password, 10);
         return newUserData;
       },
-      // set up beforeUpdate lifecycle "hook" functionality
+
       async beforeUpdate(updatedUserData) {
         updatedUserData.password = await bcrypt.hash(updatedUserData.password, 10);
         return updatedUserData;
@@ -65,7 +59,5 @@ User.init(
     modelName: 'user'
   }
 );
-
-
 
 module.exports = User;
